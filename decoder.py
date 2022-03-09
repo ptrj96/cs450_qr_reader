@@ -25,11 +25,14 @@ def decode(arr):
     --------
     the parsed message
     """
-    plt.imsave('tmp.png', arr)
+    plt.imsave("tmp.png", arr)
     with open("tmp.png", "rb") as f:
-        response = requests.post('https://zxing.org/w/decode', files=dict(f=f))
+        response = requests.post("https://zxing.org/w/decode", files=dict(f=f))
     os.remove("tmp.png")
     html = response.text
-    table_data = [[cell.text for cell in row("td")] for row in BeautifulSoup(html, 'html.parser')("tr")]
+    table_data = [
+        [cell.text for cell in row("td")]
+        for row in BeautifulSoup(html, "html.parser")("tr")
+    ]
     obj = dict(table_data)
-    return obj['Parsed Result']
+    return obj["Parsed Result"]
